@@ -3,15 +3,15 @@ import { ArrowRight, BookOpen, Compass, GraduationCap, Newspaper, Wrench } from 
 
 import { EmConstrucao } from '@/components/EmConstrucao'
 import { Marca } from '@/components/Marca'
+import { GuiasRecentes, Livros } from '@/components/Vitrine'
 import { Button } from '@/components/ui/button'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
+import { EM_CONSTRUCAO } from '@/rotas'
 
-const URL_LIVROS = import.meta.env.VITE_URL_LIVROS || '#'
-// a estante e os guias moram no site dos livros (poc_livro), em /livros/ e /guias/
-const noSite = (caminho: string) => (URL_LIVROS === '#' ? '#' : new URL(caminho, URL_LIVROS).href)
-const URL_ESTANTE = noSite('/livros/')
-const URL_GUIAS = noSite('/guias/')
+// a estante e os guias vêm do site dos livros, no mesmo domínio (vite.config.ts)
+const URL_ESTANTE = '/livros/'
+const URL_GUIAS = '/guias/'
 
 type Opcao = {
   titulo: string
@@ -42,11 +42,6 @@ const OPCOES: Opcao[] = [
   { titulo: 'Ferramentas', descricao: 'Em construção.', icone: Wrench, href: '/ferramentas', pronto: false },
 ]
 
-// os caminhos deste site que ainda não têm conteúdo; qualquer outro caminho desconhecido também cai em "em construção"
-const EM_CONSTRUCAO: Record<string, string> = {
-  ...Object.fromEntries(OPCOES.filter((o) => !o.pronto).map((o) => [o.href, o.titulo])),
-  '/entrar': 'Entrar',
-}
 
 function Cabecalho() {
   return (
@@ -155,6 +150,8 @@ export default function App() {
           <>
             <Hero />
             <FaixaDeOpcoes />
+            <GuiasRecentes />
+            <Livros />
           </>
         ) : (
           <EmConstrucao titulo={EM_CONSTRUCAO[caminho] ?? 'Esta página'} />
