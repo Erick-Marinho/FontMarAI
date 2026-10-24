@@ -1,40 +1,52 @@
 import type { LucideIcon } from 'lucide-react'
 import { ArrowRight, BookOpen, Compass, GraduationCap, Newspaper, Wrench } from 'lucide-react'
 
+import { EmConstrucao } from '@/components/EmConstrucao'
 import { Marca } from '@/components/Marca'
 import { Button } from '@/components/ui/button'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 
 const URL_LIVROS = import.meta.env.VITE_URL_LIVROS || '#'
-// os guias moram no mesmo site dos livros (poc_livro), em /guias/
-const URL_GUIAS = URL_LIVROS === '#' ? '#' : new URL('/guias/', URL_LIVROS).href
+// a estante e os guias moram no site dos livros (poc_livro), em /livros/ e /guias/
+const noSite = (caminho: string) => (URL_LIVROS === '#' ? '#' : new URL(caminho, URL_LIVROS).href)
+const URL_ESTANTE = noSite('/livros/')
+const URL_GUIAS = noSite('/guias/')
 
 type Opcao = {
   titulo: string
   descricao: string
   icone: LucideIcon
-  href?: string
+  href: string
+  pronto: boolean
 }
 
-// Livros e Guias existem hoje; as outras guardam o lugar até virarem produto.
+// Livros e Guias existem hoje; as outras levam à página "em construção" até virarem produto.
 const OPCOES: Opcao[] = [
   {
     titulo: 'Guias',
     descricao: 'Tutoriais curtos, um por dia, com o código e a saída de verdade.',
     icone: Compass,
     href: URL_GUIAS,
+    pronto: true,
   },
   {
     titulo: 'Livros',
     descricao: 'Livros técnicos em que o código se monta e o terminal roda no meio do texto.',
     icone: BookOpen,
-    href: URL_LIVROS,
+    href: URL_ESTANTE,
+    pronto: true,
   },
-  { titulo: 'Cursos', descricao: 'Em breve.', icone: GraduationCap },
-  { titulo: 'Newsletter', descricao: 'Em breve.', icone: Newspaper },
-  { titulo: 'Ferramentas', descricao: 'Em breve.', icone: Wrench },
+  { titulo: 'Cursos', descricao: 'Em construção.', icone: GraduationCap, href: '/cursos', pronto: false },
+  { titulo: 'Newsletter', descricao: 'Em construção.', icone: Newspaper, href: '/newsletter', pronto: false },
+  { titulo: 'Ferramentas', descricao: 'Em construção.', icone: Wrench, href: '/ferramentas', pronto: false },
 ]
+
+// os caminhos deste site que ainda não têm conteúdo; qualquer outro caminho desconhecido também cai em "em construção"
+const EM_CONSTRUCAO: Record<string, string> = {
+  ...Object.fromEntries(OPCOES.filter((o) => !o.pronto).map((o) => [o.href, o.titulo])),
+  '/entrar': 'Entrar',
+}
 
 function Cabecalho() {
   return (
@@ -45,21 +57,17 @@ function Cabecalho() {
           <a
             key={opcao.titulo}
             href={opcao.href}
-            aria-disabled={!opcao.href}
-            className={cn(
-              'hidden sm:inline',
-              opcao.href ? 'hover:text-foreground' : 'pointer-events-none opacity-50',
-            )}
+            className={cn('hidden hover:text-foreground sm:inline', !opcao.pronto && 'opacity-60')}
           >
             {opcao.titulo}
           </a>
         ))}
-        {/* ainda não há login: o botão guarda o lugar */}
-        <Button variant="outline" className="rounded-full">
-          Entrar
+        {/* ainda não há login: o botão leva à página "em construção" */}
+        <Button asChild variant="outline" className="rounded-full">
+          <a href="/entrar">Entrar</a>
         </Button>
         <Button asChild className="rounded-full">
-          <a href={URL_LIVROS}>Começar</a>
+          <a href={URL_ESTANTE}>Começar</a>
         </Button>
       </nav>
     </header>
@@ -78,7 +86,7 @@ function Hero() {
         do primeiro princípio à produção
       </h1>
       <Button asChild size="lg" className="mt-8 rounded-full px-6">
-        <a href={URL_LIVROS}>
+        <a href={URL_ESTANTE}>
           Começar pelos livros
           <ArrowRight />
         </a>
@@ -89,32 +97,26 @@ function Hero() {
 
 function CardOpcao({ opcao }: { opcao: Opcao }) {
   const Icone = opcao.icone
-  const conteudo = (
-    <Card
-      className={cn(
-        'h-full w-64 shrink-0 transition sm:w-72',
-        opcao.href ? 'hover:-translate-y-1 hover:ring-primary/40' : 'opacity-60',
-      )}
-    >
-      <div className="mx-4 flex h-32 items-center justify-center rounded-lg bg-primary/10 text-primary">
-        <Icone className="size-12" strokeWidth={1.5} />
-      </div>
-      <CardHeader>
-        <CardTitle className="text-lg font-semibold">{opcao.titulo}</CardTitle>
-        <CardDescription>{opcao.descricao}</CardDescription>
-      </CardHeader>
-    </Card>
-  )
-
-  return opcao.href ? (
+  return (
     <a
       href={opcao.href}
       className="rounded-xl focus-visible:ring-2 focus-visible:ring-ring focus-visible:outline-none"
     >
-      {conteudo}
+      <Card
+        className={cn(
+          'h-full w-64 shrink-0 transition hover:-translate-y-1 hover:ring-primary/40 sm:w-72',
+          !opcao.pronto && 'opacity-60',
+        )}
+      >
+        <div className="mx-4 flex h-32 items-center justify-center rounded-lg bg-primary/10 text-primary">
+          <Icone className="size-12" strokeWidth={1.5} />
+        </div>
+        <CardHeader>
+          <CardTitle className="text-lg font-semibold">{opcao.titulo}</CardTitle>
+          <CardDescription>{opcao.descricao}</CardDescription>
+        </CardHeader>
+      </Card>
     </a>
-  ) : (
-    conteudo
   )
 }
 
@@ -144,12 +146,19 @@ function Rodape() {
 }
 
 export default function App() {
+  const caminho = window.location.pathname.replace(/\/+$/, '') || '/'
   return (
     <div className="min-h-svh bg-background text-foreground">
       <Cabecalho />
       <main>
-        <Hero />
-        <FaixaDeOpcoes />
+        {caminho === '/' ? (
+          <>
+            <Hero />
+            <FaixaDeOpcoes />
+          </>
+        ) : (
+          <EmConstrucao titulo={EM_CONSTRUCAO[caminho] ?? 'Esta página'} />
+        )}
       </main>
       <Rodape />
     </div>
