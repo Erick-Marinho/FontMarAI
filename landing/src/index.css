@@ -136,3 +136,22 @@
     @apply font-sans;
     }
 }
+
+/* a marca (components/Marca.tsx): ".gui" → o g vira e vira a → o u sai e o espaço fecha → ".ai" */
+.marca { perspective: 400px }
+.marca-troca { display: inline-grid }
+.marca-troca > * { grid-area: 1 / 1; display: inline-block; backface-visibility: hidden }
+.marca-g { animation: marca-vira-sai 0.3s ease-in 0.9s both }
+.marca-a { animation: marca-vira-entra 0.3s ease-out 1.2s both }
+.marca-u { display: inline-block; max-width: 1em; animation: marca-fecha 0.35s ease-in-out 1.85s both }
+.marca-u > span { display: inline-block; animation: marca-sobe 0.35s ease-in 1.6s both }
+
+@keyframes marca-vira-sai { to { transform: rotateY(90deg); opacity: 0 } }
+@keyframes marca-vira-entra { from { transform: rotateY(-90deg); opacity: 0 } }
+@keyframes marca-sobe { to { transform: translateY(-0.9em); opacity: 0 } }
+@keyframes marca-fecha { to { max-width: 0 } }
+
+@media (prefers-reduced-motion: reduce) {
+  .marca-g, .marca-u { display: none }
+  .marca-a { animation: none }
+}
