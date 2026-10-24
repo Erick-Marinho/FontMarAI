@@ -3,10 +3,11 @@ import tailwindcss from '@tailwindcss/vite'
 import react from '@vitejs/plugin-react'
 import { defineConfig, loadEnv } from 'vite'
 
-import { EM_CONSTRUCAO } from './src/rotas.ts'
+import { EM_CONSTRUCAO, PAGINAS } from './src/rotas.ts'
 
-// O que é da landing: a página, os arquivos dela, as páginas em construção e, no dev, os do próprio Vite.
-const daLanding = ['index\\.html', 'assets/', 'favicon\\.svg', ...Object.keys(EM_CONSTRUCAO).map((r) => r.slice(1)), '@', 'src/', 'node_modules/']
+// O que é da landing: a página, os arquivos dela, as páginas dela (prontas e em construção) e, no dev, os do próprio Vite.
+const paginas = [...PAGINAS, ...Object.keys(EM_CONSTRUCAO)].map((r) => r.slice(1))
+const daLanding = ['index\\.html', 'assets/', 'favicon\\.svg', ...paginas, '@', 'src/', 'node_modules/']
 // Todo o resto vai para o site dos livros (o build dele, servido pelo `npm run site` do poc_livro): um domínio só,
 // sem backend e sem CORS, como em produção.
 const doSiteDosLivros = `^/(?!$|\\?|${daLanding.join('|')})`

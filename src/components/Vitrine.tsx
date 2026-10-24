@@ -72,10 +72,10 @@ function Falhou({ o, href }: { o: string; href: string }) {
   )
 }
 
-export function GuiasRecentes() {
+export function GuiasRecentes({ titulo = 'Guias recentes' }: { titulo?: string }) {
   const estado = useLista<Guia>('/guias/index.json', 'guias')
   return (
-    <Secao titulo="Guias recentes" todos={{ href: '/guias/', rotulo: 'Todos os guias' }}>
+    <Secao titulo={titulo} todos={{ href: '/guias/', rotulo: 'Todos os guias' }}>
       {estado.tipo === 'carregando' && <Carregando />}
       {estado.tipo === 'erro' && <Falhou o="os guias" href="/guias/" />}
       {estado.tipo === 'pronto' && (
