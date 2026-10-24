@@ -1,6 +1,7 @@
 import type { LucideIcon } from 'lucide-react'
 import { ArrowRight, BookOpen, Compass, GraduationCap, Newspaper, Wrench } from 'lucide-react'
 
+import { Marca } from '@/components/Marca'
 import { Button } from '@/components/ui/button'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
@@ -38,11 +39,7 @@ const OPCOES: Opcao[] = [
 function Cabecalho() {
   return (
     <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5">
-      {/* a marca como no poc_livro: "Font" na cor do texto, "Mar" no acento, ".ai" mais apagado */}
-      <a href="/" aria-label="FontMar.ai, início" className="font-heading text-lg font-bold tracking-tight">
-        Font<span className="text-primary">Mar</span>
-        <span className="font-semibold text-muted-foreground">.ai</span>
-      </a>
+      <Marca />
       <nav className="flex items-center gap-6 text-sm text-muted-foreground">
         {OPCOES.map((opcao) => (
           <a
