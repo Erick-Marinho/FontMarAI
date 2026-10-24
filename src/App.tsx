@@ -1,5 +1,5 @@
 import type { LucideIcon } from 'lucide-react'
-import { ArrowRight, BookOpen, Compass, GraduationCap, Newspaper, Wrench } from 'lucide-react'
+import { ArrowRight, BookOpen, Compass, Newspaper, Wrench } from 'lucide-react'
 
 import { EmConstrucao } from '@/components/EmConstrucao'
 import { Marca } from '@/components/Marca'
@@ -38,7 +38,6 @@ const OPCOES: Opcao[] = [
     href: URL_ESTANTE,
     pronto: true,
   },
-  { titulo: 'Cursos', descricao: 'Em construção.', icone: GraduationCap, href: '/cursos', pronto: false },
   { titulo: 'Newsletter', descricao: 'O guia do dia, no seu e-mail.', icone: Newspaper, href: '/newsletter', pronto: true },
   { titulo: 'Ferramentas', descricao: 'Em construção.', icone: Wrench, href: '/ferramentas', pronto: false },
 ]

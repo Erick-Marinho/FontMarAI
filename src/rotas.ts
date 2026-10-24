@@ -4,7 +4,6 @@ export const PAGINAS = ['/newsletter']
 
 // as que ainda não têm conteúdo: levam à página "em construção"
 export const EM_CONSTRUCAO: Record<string, string> = {
-  '/cursos': 'Cursos',
   '/ferramentas': 'Ferramentas',
   '/entrar': 'Entrar',
 }

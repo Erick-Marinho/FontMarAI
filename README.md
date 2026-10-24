@@ -1,8 +1,7 @@
 # FontMar.ai
 
 Página principal: daqui o leitor escolhe para onde ir. Os guias e os livros vêm do site dos livros
-([poc_livro](https://github.com/Erick-Marinho/poc_livro)); cursos, ferramentas e o login aparecem como
-"em construção".
+([poc_livro](https://github.com/Erick-Marinho/poc_livro)); ferramentas e o login aparecem como "em construção".
 
 A página da newsletter (`/newsletter`) é da landing. A inscrição vai para a plataforma de envio, pelo endereço do
 formulário dela em `VITE_NEWSLETTER_ACAO` (o campo se chama `email`; confira o nome que a plataforma espera). Sem a
