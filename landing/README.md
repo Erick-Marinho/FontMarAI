@@ -1,4 +1,4 @@
-# FontMarAI
+# FontMar.ai
 
 Página principal: daqui o leitor escolhe para onde ir. Hoje só **Livros** existe; as outras opções aparecem como
 "em breve".
