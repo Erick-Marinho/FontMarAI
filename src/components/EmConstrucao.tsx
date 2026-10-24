@@ -14,7 +14,7 @@ export function EmConstrucao({ titulo }: { titulo: string }) {
       </p>
       <h1 className="mt-2 font-heading text-4xl font-extrabold tracking-tight sm:text-5xl">{titulo}</h1>
       <p className="mt-4 text-muted-foreground">
-        Esta parte do FontMar.ai ainda está sendo feita. Enquanto isso, os guias e os livros já estão no ar.
+        Esta parte do FontMar.ai ainda está sendo feita. Enquanto isso, os experimentos e os livros já estão no ar.
       </p>
       <Button asChild variant="outline" className="mt-8 rounded-full">
         <a href="/">

@@ -1,18 +1,18 @@
 import type { LucideIcon } from 'lucide-react'
-import { ArrowRight, BookOpen, Compass, Newspaper, Wrench } from 'lucide-react'
+import { ArrowRight, BookOpen, FlaskConical, Newspaper, Wrench } from 'lucide-react'
 
 import { EmConstrucao } from '@/components/EmConstrucao'
 import { Marca } from '@/components/Marca'
 import { Newsletter } from '@/components/Newsletter'
-import { GuiasRecentes, Livros } from '@/components/Vitrine'
+import { ExperimentosRecentes, Livros } from '@/components/Vitrine'
 import { Button } from '@/components/ui/button'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 import { EM_CONSTRUCAO } from '@/rotas'
 
-// a estante e os guias vêm do site dos livros, no mesmo domínio (vite.config.ts)
+// a estante e os experimentos vêm do site dos livros, no mesmo domínio (vite.config.ts)
 const URL_ESTANTE = '/livros/'
-const URL_GUIAS = '/guias/'
+const URL_EXPERIMENTOS = '/experimentos/'
 
 type Opcao = {
   titulo: string
@@ -22,13 +22,13 @@ type Opcao = {
   pronto: boolean
 }
 
-// Livros e Guias existem hoje; as outras levam à página "em construção" até virarem produto.
+// Livros e Experimentos existem hoje; as outras levam à página "em construção" até virarem produto.
 const OPCOES: Opcao[] = [
   {
-    titulo: 'Guias',
-    descricao: 'Tutoriais curtos, um por dia, com o código e a saída de verdade.',
-    icone: Compass,
-    href: URL_GUIAS,
+    titulo: 'Experimentos',
+    descricao: 'Uma afirmação que circula, testada com código que roda e medida, com o resultado gravado.',
+    icone: FlaskConical,
+    href: URL_EXPERIMENTOS,
     pronto: true,
   },
   {
@@ -38,7 +38,7 @@ const OPCOES: Opcao[] = [
     href: URL_ESTANTE,
     pronto: true,
   },
-  { titulo: 'Newsletter', descricao: 'O guia do dia, no seu e-mail.', icone: Newspaper, href: '/newsletter', pronto: true },
+  { titulo: 'Newsletter', descricao: 'O experimento do dia, no seu e-mail.', icone: Newspaper, href: '/newsletter', pronto: true },
   { titulo: 'Ferramentas', descricao: 'Em construção.', icone: Wrench, href: '/ferramentas', pronto: false },
 ]
 
@@ -150,7 +150,7 @@ export default function App() {
           <>
             <Hero />
             <FaixaDeOpcoes />
-            <GuiasRecentes />
+            <ExperimentosRecentes />
             <Livros />
           </>
         ) : caminho === '/newsletter' ? (

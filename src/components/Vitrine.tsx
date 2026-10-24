@@ -13,7 +13,7 @@ type Livro = {
   escritos: number
   planejados: number
 }
-type Guia = { id: string; titulo: string; lide: string; data: string; etiqueta: string; href: string }
+type Experimento = { id: string; titulo: string; lide: string; data: string; etiqueta: string; href: string }
 type Estado<T> = { tipo: 'carregando' } | { tipo: 'erro' } | { tipo: 'pronto'; itens: T[] }
 
 function useLista<T>(url: string, chave: string): Estado<T> {
@@ -72,12 +72,12 @@ function Falhou({ o, href }: { o: string; href: string }) {
   )
 }
 
-export function GuiasRecentes({ titulo = 'Guias recentes' }: { titulo?: string }) {
-  const estado = useLista<Guia>('/guias/index.json', 'guias')
+export function ExperimentosRecentes({ titulo = 'Experimentos recentes' }: { titulo?: string }) {
+  const estado = useLista<Experimento>('/experimentos/index.json', 'experimentos')
   return (
-    <Secao titulo={titulo} todos={{ href: '/guias/', rotulo: 'Todos os guias' }}>
+    <Secao titulo={titulo} todos={{ href: '/experimentos/', rotulo: 'Todos os experimentos' }}>
       {estado.tipo === 'carregando' && <Carregando />}
-      {estado.tipo === 'erro' && <Falhou o="os guias" href="/guias/" />}
+      {estado.tipo === 'erro' && <Falhou o="os experimentos" href="/experimentos/" />}
       {estado.tipo === 'pronto' && (
         <ul className="divide-y">
           {estado.itens.slice(0, 3).map((g) => (
