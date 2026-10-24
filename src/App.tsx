@@ -1,11 +1,13 @@
 import type { LucideIcon } from 'lucide-react'
-import { ArrowRight, BookOpen, GraduationCap, Newspaper, Wrench } from 'lucide-react'
+import { ArrowRight, BookOpen, Compass, GraduationCap, Newspaper, Wrench } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
 
 const URL_LIVROS = import.meta.env.VITE_URL_LIVROS || '#'
+// os guias moram no mesmo site dos livros (poc_livro), em /guias/
+const URL_GUIAS = URL_LIVROS === '#' ? '#' : new URL('/guias/', URL_LIVROS).href
 
 type Opcao = {
   titulo: string
@@ -14,8 +16,14 @@ type Opcao = {
   href?: string
 }
 
-// Só Livros existe hoje; as outras guardam o lugar até virarem produto.
+// Livros e Guias existem hoje; as outras guardam o lugar até virarem produto.
 const OPCOES: Opcao[] = [
+  {
+    titulo: 'Guias',
+    descricao: 'Tutoriais curtos, um por dia, com o código e a saída de verdade.',
+    icone: Compass,
+    href: URL_GUIAS,
+  },
   {
     titulo: 'Livros',
     descricao: 'Livros técnicos em que o código se monta e o terminal roda no meio do texto.',
@@ -30,8 +38,10 @@ const OPCOES: Opcao[] = [
 function Cabecalho() {
   return (
     <header className="mx-auto flex max-w-6xl items-center justify-between px-4 py-5">
-      <a href="/" className="font-heading text-lg font-bold tracking-tight">
-        FontMar<span className="text-primary">AI</span>
+      {/* a marca como no poc_livro: "Font" na cor do texto, "Mar" no acento, ".ai" mais apagado */}
+      <a href="/" aria-label="FontMar.ai, início" className="font-heading text-lg font-bold tracking-tight">
+        Font<span className="text-primary">Mar</span>
+        <span className="font-semibold text-muted-foreground">.ai</span>
       </a>
       <nav className="flex items-center gap-6 text-sm text-muted-foreground">
         {OPCOES.map((opcao) => (
@@ -47,6 +57,10 @@ function Cabecalho() {
             {opcao.titulo}
           </a>
         ))}
+        {/* ainda não há login: o botão guarda o lugar */}
+        <Button variant="outline" className="rounded-full">
+          Entrar
+        </Button>
         <Button asChild className="rounded-full">
           <a href={URL_LIVROS}>Começar</a>
         </Button>
