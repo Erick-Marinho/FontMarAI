@@ -3,6 +3,7 @@ import { ArrowRight, BookOpen, Compass, GraduationCap, Newspaper, Wrench } from 
 
 import { EmConstrucao } from '@/components/EmConstrucao'
 import { Marca } from '@/components/Marca'
+import { Newsletter } from '@/components/Newsletter'
 import { GuiasRecentes, Livros } from '@/components/Vitrine'
 import { Button } from '@/components/ui/button'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
@@ -38,7 +39,7 @@ const OPCOES: Opcao[] = [
     pronto: true,
   },
   { titulo: 'Cursos', descricao: 'Em construção.', icone: GraduationCap, href: '/cursos', pronto: false },
-  { titulo: 'Newsletter', descricao: 'Em construção.', icone: Newspaper, href: '/newsletter', pronto: false },
+  { titulo: 'Newsletter', descricao: 'O guia do dia, no seu e-mail.', icone: Newspaper, href: '/newsletter', pronto: true },
   { titulo: 'Ferramentas', descricao: 'Em construção.', icone: Wrench, href: '/ferramentas', pronto: false },
 ]
 
@@ -153,6 +154,8 @@ export default function App() {
             <GuiasRecentes />
             <Livros />
           </>
+        ) : caminho === '/newsletter' ? (
+          <Newsletter />
         ) : (
           <EmConstrucao titulo={EM_CONSTRUCAO[caminho] ?? 'Esta página'} />
         )}
