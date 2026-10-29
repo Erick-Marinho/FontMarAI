@@ -11,6 +11,7 @@ rm -rf publicar && mkdir publicar
 cp -r "$LIVRO"/dist/. publicar/
 cp -r dist/. publicar/
 
+export LC_ALL=C
 echo "--- arquivos do livro trocados pelos da landing (esperado: só ./index.html)"
 comm -12 <(cd "$LIVRO"/dist && find . -type f | sort) <(cd dist && find . -type f | sort)
 
