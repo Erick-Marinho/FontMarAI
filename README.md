@@ -12,6 +12,7 @@ npm run tunel    # o túnel do FontMar.ai (ngrok), remontado sozinho a cada muda
 npm test         # monta o site e confere as saídas do livro
 npm run saidas   # roda os comandos do livro no projeto e grava as saídas
 npm run site     # monta e serve o site em http://localhost:4321, como em produção
+npm run publicar # monta e publica no Firebase Hosting, no site principal do projeto fontemar-ai (https://fontemar-ai.web.app)
 ```
 
 Um site só: a landing (`/`, `/newsletter` e as páginas em construção, em `src/components/landing/`), a estante, os

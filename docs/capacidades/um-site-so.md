@@ -14,6 +14,8 @@ mexer nos dois, testar exige subir os dois, e o nome já divergiu (FontMar.ai na
 - (2) O Tailwind só varre o `src/`: o texto dos livros e o código dos projetos não viram classe.
 - (2) O reset e as cores da landing ficam no `landing.css`, carregado só nas páginas dela.
 - (2) A raiz deixa de levar à estante e vira a home; o teste das rotas troca junto.
+- (4) O GitHub tinha 24 commits de outra máquina (KV cache, áudio, deploy): entram por merge antes do push.
+- (14/11/2026, Erick) O site `fontemar-livro` do Firebase é excluído; o `dist/` vai para o site principal, `fontemar-ai`.
 - (14/11/2026, Erick) A landing segue o vocabulário do livro: "palpite" e "executa" nas quatro frases que diziam "aposta" e "roda".
 
 ## Peças
