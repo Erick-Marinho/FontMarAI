@@ -1,0 +1,26 @@
+---
+/**
+ * As figuras do KV cache (docs/capacidades/experimento-kv-cache.md, etapas 5 a 8): a jornada de uma pergunta, que abre
+ * o texto, ou o modelo com e sem as anotações, em "O que vamos construir"
+ * (kv/FiguraKv.tsx), que o leitor toca ou rola. É ilustração (figuras/jornada.json e figuras/kv.json): sem número
+ * medido. Sem JS, os balões em lista.
+ */
+import FiguraKv from "./kv/FiguraKv";
+import { ANOTACOES, baloes, JORNADA, LEGENDAS, montarJornada, montarKv } from "./kv/kv.ts";
+
+interface Props { dados: any; qual: "jornada" | "anotacoes" }
+const { qual } = Astro.props;
+const dados = qual === "jornada" ? montarJornada(Astro.props.dados) : montarKv(Astro.props.dados);
+const f = { jornada: JORNADA, anotacoes: ANOTACOES }[qual];
+const legenda = LEGENDAS[qual];
+---
+<figure class="kv-cache" data-kv-cache={qual}>
+  <FiguraKv client:visible={{ rootMargin: "400px" }} dados={dados} qual={qual} />
+  <noscript><ol>{baloes(f).map((b) => <li>{b.texto}</li>)}</ol></noscript>
+  <figcaption>{legenda}</figcaption>
+</figure>
+
+<style is:global>
+  .kv-cache { margin: 1.8em auto 2em; max-width: 800px }
+  .kv-cache figcaption { margin-top: 10px; font: 14px/1.5 var(--f-ui); color: var(--ink-2) }
+</style>

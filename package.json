@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "dev": "astro dev",
+    "dev": "bash scripts/dev.sh",
     "tunel": "node scripts/tunel.mjs",
     "build": "astro build",
     "preview": "astro preview",
