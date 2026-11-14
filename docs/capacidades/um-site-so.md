@@ -34,15 +34,14 @@ mexer nos dois, testar exige subir os dois, e o nome já divergiu (FontMar.ai na
 3. Apagar os proxies, as listas de rotas e as variáveis de repasse; um nome só.
 4. Renomear o repositório para FontMarAI e arquivar o antigo (no GitHub, pelo responsável).
 
-## Etapa 3, detalhada
+## Etapa 4, detalhada
 
-- **Arquivos:** `astro.config.mjs` (sai o repasse para a landing); `scripts/dev.sh` sai e o `npm run dev` vira o
-  `astro dev`; `scripts/tunel.mjs` monta e serve um site só; `src/lib/site.ts` e o `PUBLIC_URL_INICIO` saem (a home é
-  `/`); o nome único nos títulos, nas marcas e nos rótulos; `README.md` (como rodar, a newsletter e o `.env.example`).
-- **Evidência:** `rg` sem `URL_LANDING`, `URL_CONTEUDO`, `PUBLIC_URL_INICIO` nem `../FontMarAI` fora dos docs; o
-  `npm run dev` abre a home, a estante e um capítulo numa porta só; `node --test` passa, com o nome conferido em toda página.
-- **Fora:** renomear e arquivar no GitHub (etapa 4); a regra de reescrita da hospedagem, que deixa de existir quando
-  o deploy for um site só.
+- **No GitHub, pelo responsável:** renomear o `FontMarAI` de hoje (a landing) para `FontMarAI-landing` e arquivá-lo;
+  depois, renomear o `poc_livro` para `FontMarAI` (o GitHub redireciona o endereço antigo).
+- **Aqui, com a decisão escrita do responsável:** `git remote set-url origin` para o `FontMarAI` e o `push` dos commits.
+- **Evidência:** `git remote -v` no endereço novo; `git status` em dia com `origin/main`; o repositório no GitHub com
+  `src/components/landing/`.
+- **Fora:** o deploy (a regra de reescrita da hospedagem sai quando o deploy for este site); renomear a pasta local.
 
 ## Registro
 
@@ -50,5 +49,6 @@ mexer nos dois, testar exige subir os dois, e o nome já divergiu (FontMar.ai na
 |---|---|---|---|
 | 1 | `79a30d6` | `git log -- landing/src/App.tsx` com os 8 commits; 205/205 testes e 5/5 da gravação. `saidas:conferir` e `experimentos:conferir` já falhavam em `0a915a9` (roteiro `01.json`, passo 2) | 14/11/2026, Erick |
 | 2 | `bed6928` | 211/211 testes; páginas do livro iguais pixel a pixel antes e depois (claro e escuro, 1280 e 500 px); landing igual à do FontMarAI, menos as quatro frases | 14/11/2026, Erick |
+| 3 | `ca27377` | 212/212 testes; nenhuma variável de repasse fora dos docs; `npm run dev` com a home, a estante, um capítulo e a newsletter numa porta só. O `npm run tunel` não foi executado (publicaria pelo ngrok) | 14/11/2026, Erick |
 
 (redação: claude-opus-5-5)
