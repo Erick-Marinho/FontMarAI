@@ -1,0 +1,6 @@
+---
+import Landing from "../layouts/Landing.astro";
+import { PaginaNewsletter } from "../components/landing/Paginas";
+import { experimentos } from "../lib/vitrine";
+---
+<Landing><PaginaNewsletter experimentos={await experimentos()} /></Landing>

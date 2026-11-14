@@ -1,5 +1,7 @@
 ---
-import Redirecionar from "../components/Redirecionar.astro";
-/* a entrada do site dos livros é a estante: a página antiga do poc (a lista dos capítulos) virou /livros/ */
+/* a home do FontMar.ai: a landing, com os experimentos recentes e a estante lidos no build (src/lib/vitrine.ts) */
+import Landing from "../layouts/Landing.astro";
+import { PaginaInicio } from "../components/landing/Paginas";
+import { estante, experimentos } from "../lib/vitrine";
 ---
-<Redirecionar para="/livros/" />
+<Landing><PaginaInicio experimentos={await experimentos()} livros={await estante()} /></Landing>

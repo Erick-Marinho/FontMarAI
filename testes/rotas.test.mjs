@@ -1,4 +1,4 @@
-/** Nenhum endereço do site dá em nada: a raiz abre a estante, /<livro>/ abre o primeiro texto, e o resto cai em "em construção". Rode depois de `astro build`. */
+/** Nenhum endereço do site dá em nada: a raiz é a home (a landing, docs/capacidades/um-site-so.md), /<livro>/ abre o primeiro texto, e o resto cai em "em construção". Rode depois de `astro build`. */
 import { test } from "node:test";
 import assert from "node:assert/strict";
 import { existsSync, readFileSync } from "node:fs";
@@ -7,7 +7,10 @@ const raiz = new URL("../", import.meta.url);
 const ler = (p) => readFileSync(new URL(`dist${p}`, raiz), "utf8");
 const destino = (p) => ler(p).match(/http-equiv="refresh" content="0;url=([^"]+)"/)?.[1];
 
-test("a raiz leva à estante", () => assert.equal(destino("/index.html"), "/livros/"));
+test("a raiz é a home, e não um redirecionamento, com o caminho para a estante", () => {
+  assert.equal(destino("/index.html"), undefined);
+  assert.match(ler("/index.html"), /href="\/livros\/"/);
+});
 
 test("/ciclo-de-vida/ abre o livro pela introdução, uma página que existe", () => {
   const href = destino("/ciclo-de-vida/index.html");
@@ -30,7 +33,8 @@ test("em toda página a marca leva à home, e as páginas do site têm o Início
   for (const f of paginas) {
     const doc = parse(ler(`/${f}`));
     if (doc.querySelector('meta[http-equiv="refresh"]')) continue;
-    const marcas = doc.querySelectorAll("a.marca, a.sm-marca");
+    // a da landing (components/landing/Marca.tsx) não tem a classe: tem o mesmo rótulo, "<nome>, início"
+    const marcas = doc.querySelectorAll('a.marca, a.sm-marca, a[aria-label$=", início"]');
     assert.ok(marcas.length, `${f}: sem a marca`);
     for (const a of marcas) homes.add(a.getAttribute("href"));
     for (const a of doc.querySelectorAll(".topo-site a")) if (a.text === "Início") homes.add(a.getAttribute("href"));

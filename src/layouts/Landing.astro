@@ -1,3 +1,8 @@
+---
+/** As páginas da landing: o Tailwind do site todo e, só aqui, o reset e as cores dela (src/styles/landing.css). */
+import "../styles/tailwind.css";
+import "../styles/landing.css";
+---
 <!doctype html>
 <html lang="pt-BR">
   <head>
@@ -11,7 +16,6 @@
     <meta name="description" content="Livros, experimentos e ferramentas para aprender engenharia de IA fazendo." />
   </head>
   <body>
-    <div id="root"></div>
-    <script type="module" src="/src/main.tsx"></script>
+    <slot />
   </body>
 </html>

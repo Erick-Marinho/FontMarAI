@@ -1,6 +1,7 @@
 import { defineConfig } from "astro/config";
 import mdx from "@astrojs/mdx";
 import react from "@astrojs/react";
+import tailwindcss from "@tailwindcss/vite";
 import { unified } from "@astrojs/markdown-remark";
 import { secoesNumeradas } from "./src/lib/secoes.mjs";
 
@@ -26,7 +27,8 @@ export default defineConfig({
     "/ciclo-de-vida/00-prefacio": "/ciclo-de-vida/00-introducao" },
   /* smartypants desligado: as aspas e os traços saem como o autor escreveu */
   markdown: { processor: unified({ rehypePlugins: [secoesNumeradas], smartypants: false }) },
-  vite: { server: {
+  /* o Tailwind do site todo, sem o reset (src/styles/tailwind.css) */
+  vite: { plugins: [tailwindcss()], server: {
     /* dependências Python e cópias geradas esgotam os watchers; o dev passa a misturar texto antigo e componentes novos */
     watch: { ignored: /[/\\](?:\.venv|\.leitor|\.tunel|__pycache__)(?:[/\\]|$)/ },
     ...(landing ? { proxy: { [daLanding]: { target: landing, changeOrigin: true } } } : {}),

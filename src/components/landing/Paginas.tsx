@@ -1,16 +1,18 @@
+import type { ReactNode } from 'react'
 import type { LucideIcon } from 'lucide-react'
 import { ArrowRight, BookOpen, FlaskConical, Newspaper, Wrench } from 'lucide-react'
 
-import { EmConstrucao } from '@/components/EmConstrucao'
-import { Marca } from '@/components/Marca'
-import { Newsletter } from '@/components/Newsletter'
-import { ExperimentosRecentes, Livros } from '@/components/Vitrine'
+import { EmConstrucao } from '@/components/landing/EmConstrucao'
+import { Marca } from '@/components/landing/Marca'
+import { Newsletter } from '@/components/landing/Newsletter'
+import { ExperimentosRecentes, Livros } from '@/components/landing/Vitrine'
 import { Button } from '@/components/ui/button'
 import { Card, CardDescription, CardHeader, CardTitle } from '@/components/ui/card'
 import { cn } from '@/lib/utils'
-import { EM_CONSTRUCAO } from '@/rotas'
+import type { Experimento, Livro } from '@/lib/vitrine'
 
-// a estante e os experimentos vêm do site dos livros, no mesmo domínio (vite.config.ts)
+// As páginas da landing (src/pages/index.astro, newsletter.astro, ferramentas.astro, entrar.astro), montadas no build,
+// sem JavaScript no navegador. A estante e os experimentos são deste mesmo site.
 const URL_ESTANTE = '/livros/'
 const URL_EXPERIMENTOS = '/experimentos/'
 
@@ -26,14 +28,14 @@ type Opcao = {
 const OPCOES: Opcao[] = [
   {
     titulo: 'Experimentos',
-    descricao: 'Uma afirmação que circula, testada com código que roda e medida, com o resultado gravado.',
+    descricao: 'Uma afirmação que circula, testada com código que executa e medida, com o resultado gravado.',
     icone: FlaskConical,
     href: URL_EXPERIMENTOS,
     pronto: true,
   },
   {
     titulo: 'Livros',
-    descricao: 'Livros técnicos em que o código se monta e o terminal roda no meio do texto.',
+    descricao: 'Livros técnicos em que o código se monta e o terminal executa no meio do texto.',
     icone: BookOpen,
     href: URL_ESTANTE,
     pronto: true,
@@ -140,26 +142,41 @@ function Rodape() {
   )
 }
 
-export default function App() {
-  const caminho = window.location.pathname.replace(/\/+$/, '') || '/'
+// o cabeçalho e o rodapé de toda página da landing
+function Moldura({ children }: { children: ReactNode }) {
   return (
     <div className="min-h-svh bg-background text-foreground">
       <Cabecalho />
-      <main>
-        {caminho === '/' ? (
-          <>
-            <Hero />
-            <FaixaDeOpcoes />
-            <ExperimentosRecentes />
-            <Livros />
-          </>
-        ) : caminho === '/newsletter' ? (
-          <Newsletter />
-        ) : (
-          <EmConstrucao titulo={EM_CONSTRUCAO[caminho] ?? 'Esta página'} />
-        )}
-      </main>
+      <main>{children}</main>
       <Rodape />
     </div>
+  )
+}
+
+export function PaginaInicio({ experimentos, livros }: { experimentos: Experimento[]; livros: Livro[] }) {
+  return (
+    <Moldura>
+      <Hero />
+      <FaixaDeOpcoes />
+      <ExperimentosRecentes itens={experimentos} />
+      <Livros itens={livros} />
+    </Moldura>
+  )
+}
+
+export function PaginaNewsletter({ experimentos }: { experimentos: Experimento[] }) {
+  return (
+    <Moldura>
+      <Newsletter experimentos={experimentos} />
+    </Moldura>
+  )
+}
+
+// o que ainda não tem conteúdo (ferramentas, entrar): o link leva a algum lugar, e o lugar diz que está sendo feito
+export function PaginaEmConstrucao({ titulo }: { titulo: string }) {
+  return (
+    <Moldura>
+      <EmConstrucao titulo={titulo} />
+    </Moldura>
   )
 }

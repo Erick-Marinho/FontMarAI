@@ -3,10 +3,12 @@ import { CircleCheck, Mail, Terminal } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
 import { Button } from '@/components/ui/button'
-import { ExperimentosRecentes } from '@/components/Vitrine'
+import { ExperimentosRecentes } from '@/components/landing/Vitrine'
+import type { Experimento } from '@/lib/vitrine'
 
 // O endereço do formulário da plataforma de envio (o "action" do formulário de inscrição dela). Enquanto a plataforma
-// não for escolhida, ele fica vazio: o formulário aparece desligado e nenhum e-mail é recolhido.
+// não for escolhida, ele fica vazio: o formulário aparece desligado (o campo e o botão, no HTML) e nenhum e-mail é
+// recolhido. Lido no build.
 const ACAO = import.meta.env.VITE_NEWSLETTER_ACAO || ''
 
 const O_QUE_CHEGA: { icone: LucideIcon; titulo: string; texto: string }[] = [
@@ -17,13 +19,13 @@ const O_QUE_CHEGA: { icone: LucideIcon; titulo: string; texto: string }[] = [
   },
   {
     icone: Terminal,
-    titulo: 'Código que roda de verdade',
+    titulo: 'Código que executa de verdade',
     texto: 'O código e a saída do terminal saem do projeto real do experimento e são conferidos a cada publicação.',
   },
   {
     icone: CircleCheck,
     titulo: 'Para fazer, não só ler',
-    texto: 'Cada experimento pede uma aposta: você prevê o resultado antes de ver a medição.',
+    texto: 'Cada experimento pede um palpite: você prevê o resultado antes de ver a medição.',
   },
 ]
 
@@ -34,7 +36,6 @@ function Inscricao() {
     <form
       action={aberta ? ACAO : undefined}
       method="post"
-      onSubmit={(e) => !aberta && e.preventDefault()}
       className="mx-auto mt-10 w-full max-w-md"
     >
       <label htmlFor={campo} className="sr-only">
@@ -64,7 +65,7 @@ function Inscricao() {
   )
 }
 
-export function Newsletter() {
+export function Newsletter({ experimentos }: { experimentos: Experimento[] }) {
   return (
     <>
       <section className="mx-auto max-w-3xl px-4 pt-16 text-center sm:pt-24">
@@ -92,7 +93,7 @@ export function Newsletter() {
         ))}
       </section>
 
-      <ExperimentosRecentes titulo="O que já saiu" />
+      <ExperimentosRecentes itens={experimentos} titulo="O que já saiu" />
     </>
   )
 }
