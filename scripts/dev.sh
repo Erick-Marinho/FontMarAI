@@ -6,8 +6,8 @@ set -euo pipefail
 # Para ele antes.
 antigo=$(npx astro dev status 2>&1 | grep -o 'running at [^ ]* (pid [0-9]*' | sed 's/running at \(.*\) (pid \(.*\)/\1, pid \2/' || true)
 [ -n "$antigo" ] && npx astro dev stop >/dev/null 2>&1 && echo "parei o astro dev que já rodava neste projeto ($antigo); este fica no lugar dele"
-# ao sair (Ctrl+C), para o astro dev (fora de um terminal, ele roda desacoplado e volta na hora)
-trap 'npx astro dev stop >/dev/null 2>&1' EXIT
+# num terminal, o Ctrl+C para o astro dev; fora de um terminal, ele roda desacoplado e fica no ar (pare com
+# npx astro dev stop). Sem trap de saída: fora do terminal, o script acaba na hora e o trap derrubaria o servidor.
 # o --force não limpa o registro de conteúdo do dev: com o esquema e um .mdx mudados juntos, o astro dev relê o .mdx com
 # o esquema antigo e guarda o resultado (um campo novo some no dev e aparece no build). Ele se refaz ao iniciar.
 rm -f .astro/data-store.json
