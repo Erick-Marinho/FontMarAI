@@ -3,7 +3,6 @@ import "../styles/tailwind.css";
 import "../styles/livro.css";
 import "../styles/experimentos.css";
 import TopoSite from "../components/TopoSite.astro";
-import { INICIO } from "../lib/site";
 
 /* todo endereço que ainda não tem nada (um capítulo por escrever, um link errado) cai aqui, e não num erro cru */
 ---
@@ -13,7 +12,7 @@ import { INICIO } from "../lib/site";
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
     <script is:inline>try{var t=localStorage.getItem("fontmar:tema");if(t)document.documentElement.dataset.theme=t}catch(e){}</script>
-    <title>Em construção · FonteMar.ai</title>
+    <title>Em construção · FontMar.ai</title>
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,700;1,7..72,400&family=IBM+Plex+Sans:wght@400;500;600&family=JetBrains+Mono:wght@600&display=swap" />
@@ -25,7 +24,7 @@ import { INICIO } from "../lib/site";
         <span class="estado">em construção</span>
         <h1>Esta página ainda está sendo feita</h1>
         <p>O que você procura ainda não foi escrito, ou o endereço mudou. Os livros e os experimentos já estão no ar.</p>
-        <p class="links"><a href={INICIO}>← Voltar ao início</a><a href="/livros/">Ver os livros</a><a href="/experimentos/">Ver os experimentos</a></p>
+        <p class="links"><a href="/">← Voltar ao início</a><a href="/livros/">Ver os livros</a><a href="/experimentos/">Ver os experimentos</a></p>
       </section>
     </main>
   </body>

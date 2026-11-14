@@ -5,11 +5,6 @@ import tailwindcss from "@tailwindcss/vite";
 import { unified } from "@astrojs/markdown-remark";
 import { secoesNumeradas } from "./src/lib/secoes.mjs";
 
-/* no desenvolvimento com a landing (npm run dev): o que é dela vai para ela, o resto é deste site, num endereço só,
-   como no túnel. As páginas dela estão em FontMarAI/src/rotas.ts; os arquivos dela, em assets/ e favicon.svg */
-const landing = process.env.URL_LANDING;
-const daLanding = "^/(?:$|\\?|assets/|favicon\\.svg|newsletter|ferramentas|entrar)";
-
 /* o astro dev guarda o cache de dependências do Vite numa pasta só dele: um astro build (o npm test) reescreve
    node_modules/.vite com o React de produção e sem as dependências das ilhas, e um astro dev que já estava rodando
    passa a responder 504 ("Outdated Optimize Dep"), e as ilhas não carregam */
@@ -19,6 +14,8 @@ const cacheDoDev = {
 };
 
 export default defineConfig({
+  /* o túnel (npm run tunel) chega pelo domínio do ngrok; qualquer outro host recebe 403 */
+  server: { allowedHosts: [".ngrok-free.app", ".ngrok-free.dev", ".ngrok.app", ".ngrok.dev", ".ngrok.io"] },
   /* react: só nas figuras que precisam de uma ilha interativa (a do agente, na introdução) */
   integrations: [mdx(), react(), cacheDoDev],
   /* os guias viraram experimentos (docs/capacidades/experimentos.md): link antigo já compartilhado não quebra */
@@ -31,6 +28,5 @@ export default defineConfig({
   vite: { plugins: [tailwindcss()], server: {
     /* dependências Python e cópias geradas esgotam os watchers; o dev passa a misturar texto antigo e componentes novos */
     watch: { ignored: /[/\\](?:\.venv|\.leitor|\.tunel|__pycache__)(?:[/\\]|$)/ },
-    ...(landing ? { proxy: { [daLanding]: { target: landing, changeOrigin: true } } } : {}),
   } },
 });

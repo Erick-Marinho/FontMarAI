@@ -34,24 +34,21 @@ mexer nos dois, testar exige subir os dois, e o nome já divergiu (FontMar.ai na
 3. Apagar os proxies, as listas de rotas e as variáveis de repasse; um nome só.
 4. Renomear o repositório para FontMarAI e arquivar o antigo (no GitHub, pelo responsável).
 
-## Etapa 2, detalhada
+## Etapa 3, detalhada
 
-- **Arquivos:** os componentes saem de `landing/src/` para `src/components/landing/` (`git mv`, o histórico segue);
-  `src/layouts/Landing.astro` (as fontes, o CSS da landing); `src/pages/index.astro` (deixa de redirecionar),
-  `src/pages/newsletter.astro`, `src/pages/ferramentas.astro`, `src/pages/entrar.astro`; o `Vitrine` recebe as listas
-  por props, de `src/lib/vitrine.ts`; `testes/landing.test.mjs`; `package.json` e `astro.config.mjs` (Tailwind).
-  O resto de `landing/` (Vite, `index.html`, `main.tsx`) sai.
-- **Evidência:** `npm run build` gera `/`, `/newsletter`, `/ferramentas` e `/entrar`; o teste confere que a home lista
-  os mesmos livros e experimentos dos JSON e que os links abrem; as páginas da landing não carregam JavaScript; o CSS
-  da landing não aparece nas páginas dos capítulos; capturas de `/` e `/newsletter` no claro e no escuro, lado a lado
-  com a landing de hoje.
-- **Fora:** os proxies, as listas de rotas e as variáveis de repasse (etapa 3); o nome único (etapa 3); o cabeçalho
-  comum entre a landing e o resto do site.
+- **Arquivos:** `astro.config.mjs` (sai o repasse para a landing); `scripts/dev.sh` sai e o `npm run dev` vira o
+  `astro dev`; `scripts/tunel.mjs` monta e serve um site só; `src/lib/site.ts` e o `PUBLIC_URL_INICIO` saem (a home é
+  `/`); o nome único nos títulos, nas marcas e nos rótulos; `README.md` (como rodar, a newsletter e o `.env.example`).
+- **Evidência:** `rg` sem `URL_LANDING`, `URL_CONTEUDO`, `PUBLIC_URL_INICIO` nem `../FontMarAI` fora dos docs; o
+  `npm run dev` abre a home, a estante e um capítulo numa porta só; `node --test` passa, com o nome conferido em toda página.
+- **Fora:** renomear e arquivar no GitHub (etapa 4); a regra de reescrita da hospedagem, que deixa de existir quando
+  o deploy for um site só.
 
 ## Registro
 
 | Etapa | Commit | Evidência | Ok |
 |---|---|---|---|
 | 1 | `79a30d6` | `git log -- landing/src/App.tsx` com os 8 commits; 205/205 testes e 5/5 da gravação. `saidas:conferir` e `experimentos:conferir` já falhavam em `0a915a9` (roteiro `01.json`, passo 2) | 14/11/2026, Erick |
+| 2 | `bed6928` | 211/211 testes; páginas do livro iguais pixel a pixel antes e depois (claro e escuro, 1280 e 500 px); landing igual à do FontMarAI, menos as quatro frases | 14/11/2026, Erick |
 
 (redação: claude-opus-5-5)

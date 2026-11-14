@@ -7,28 +7,25 @@ O capítulo é escrito em MDX (Markdown com componentes); o Astro monta o site.
 
 ```bash
 npm install
-npm run dev        # http://localhost:4321: a landing do FontMar.ai, os livros e os experimentos, num endereço só
-npm run dev:livro  # http://localhost:4321, só os livros e os experimentos
-npm run tunel      # o túnel do FontMar.ai (ngrok), remontado sozinho a cada mudança
+npm run dev      # http://localhost:4321: a landing do FontMar.ai, os livros e os experimentos; recarrega quando você edita
+npm run tunel    # o túnel do FontMar.ai (ngrok), remontado sozinho a cada mudança
 npm test         # monta o site e confere as saídas do livro
 npm run saidas   # roda os comandos do livro no projeto e grava as saídas
-npm run site     # monta e serve o site em http://localhost:4321, como a landing do FontMar.ai o lê
+npm run site     # monta e serve o site em http://localhost:4321, como em produção
 ```
 
-O build publica `/livros/index.json` e `/experimentos/index.json` (`src/lib/vitrine.ts`), que a landing do FontMar.ai mostra.
-A marca e o "Início" levam a `PUBLIC_URL_INICIO`; sem a variável, `/`, que no `npm run dev` é a landing.
+Um site só: a landing (`/`, `/newsletter` e as páginas em construção, em `src/components/landing/`), a estante, os
+livros e os experimentos (docs/capacidades/um-site-so.md). A home lê os experimentos e a estante no build
+(`src/lib/vitrine.ts`), as mesmas listas de `/livros/` e `/experimentos/`.
 
-O `npm run dev` sobe tudo num endereço só, para navegar como o leitor: o livro em `astro dev` (recarrega quando você
-edita) e a landing ([FontMarAI](https://github.com/Erick-Marinho/FontMarAI), clonada ao lado deste repositório, ou em
-`LANDING=caminho`) montada, e montada de novo quando ela muda. O `astro dev` repassa para a landing o que é dela (`/`, a
-newsletter, as páginas em construção e os arquivos dela: `astro.config.mjs`). O Astro só deixa um `astro dev` por
-projeto: se já houver um rodando, o `npm run dev` para ele antes e avisa. Ctrl+C para tudo.
+A inscrição da newsletter vai para a plataforma de envio, pelo endereço do formulário dela em `VITE_NEWSLETTER_ACAO`
+(`.env.example`; o campo se chama `email`). Sem a variável, o formulário sai desligado, com "as inscrições abrem em
+breve", e nenhum e-mail é recolhido. Ela é lida no build.
 
-O `npm run tunel` mostra a pasta para quem está de fora, como em produção: o site dos livros montado (porta 4322), a
-landing montada (4173) e o ngrok apontando para ela. Ele sobe o que não estiver no ar e fica de olho em `livros/`,
-`experimentos/`, `src/` e na landing: poucos segundos depois de uma mudança, remonta o lado que mudou. O build vai para
-`.tunel/` e só troca a versão no ar quando dá certo; com o build quebrado, o túnel segue na última versão boa. Ctrl+C
-para o que ele subiu.
+O `npm run tunel` mostra a pasta para quem está de fora, como em produção: o site montado (porta 4322) e o ngrok
+apontando para ele. Ele sobe o que não estiver no ar e fica de olho em `livros/`, `experimentos/`, `src/` e `public/`:
+poucos segundos depois de uma mudança, remonta o site. O build vai para `.tunel/` e só troca a versão no ar quando dá
+certo; com o build quebrado, o túnel segue na última versão boa. Ctrl+C para o que ele subiu.
 
 Para o projeto do livro (Python): [uv](https://docs.astral.sh/uv/).
 

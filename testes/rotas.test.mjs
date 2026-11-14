@@ -46,3 +46,20 @@ test("o endereço antigo do prefácio leva à introdução", () => {
   const html = readFileSync(new URL("../dist/ciclo-de-vida/00-prefacio/index.html", import.meta.url), "utf8");
   assert.match(html, /url=\/ciclo-de-vida\/00-introducao/);
 });
+
+test("o site tem um nome só, FontMar.ai: nenhuma página diz outro, e toda marca diz este (docs/capacidades/um-site-so.md)", async () => {
+  const { readdirSync } = await import("node:fs");
+  const { parse } = await import("node-html-parser");
+  const paginas = readdirSync(new URL("dist/", raiz), { recursive: true }).filter((f) => f.endsWith(".html"));
+  for (const f of paginas) {
+    const html = ler(`/${f}`);
+    assert.doesNotMatch(html, /FonteMar/i, f);
+    const doc = parse(html);
+    if (doc.querySelector('meta[http-equiv="refresh"]')) continue;
+    for (const a of doc.querySelectorAll('a.marca, a.sm-marca, a[aria-label$=", início"]')) {
+      assert.equal(a.getAttribute("aria-label"), "FontMar.ai, início", f);
+      // o texto da marca da landing tem as letras da animação (".gui" vira ".ai"); o nome inteiro está no rótulo
+      assert.match(a.text.replace(/\s+/g, ""), /^FontMar\./, `${f}: a marca diz ${a.text}`);
+    }
+  }
+});

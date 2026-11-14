@@ -1,51 +1,38 @@
-// npm run tunel: o túnel do FontMar (a landing e o site dos livros num domínio só, como em produção) em dia com a pasta.
-//   Sobe o que faltar (o site dos livros montado na 4322, a landing montada na 4173 e o ngrok) e remonta o lado que mudou
-//   poucos segundos depois de cada edição. O build vai para .tunel/ e só troca a versão no ar quando dá certo: build
-//   quebrado no meio de uma edição deixa o túnel na última versão boa. Ctrl+C para o que este script subiu.
-// A landing fica ao lado deste repositório (../FontMarAI); outro lugar: LANDING=caminho npm run tunel
+// npm run tunel: o túnel do FontMar.ai (o site montado, como em produção) em dia com a pasta.
+//   Sobe o que faltar (o site montado na 4322 e o ngrok) e remonta o site poucos segundos depois de cada edição. O build
+//   vai para .tunel/ e só troca a versão no ar quando dá certo: build quebrado no meio de uma edição deixa o túnel na
+//   última versão boa. Ctrl+C para o que este script subiu.
 import { spawn, spawnSync } from "node:child_process";
 import { existsSync, readdirSync, renameSync, rmSync, statSync } from "node:fs";
 import { connect } from "node:net";
 import { resolve } from "node:path";
 
 const RAIZ = resolve(import.meta.dirname, "..");
-const LANDING = resolve(RAIZ, process.env.LANDING ?? "../FontMarAI");
-const PORTA_LIVROS = 4322;
-const PORTA_LANDING = 4173;
+const PORTA = 4322;
 const ESPERA_MS = 1500;
-if (!existsSync(`${LANDING}/package.json`)) { console.error(`a landing não está em ${LANDING}: clone o FontMarAI ao lado deste repositório, ou use LANDING=caminho`); process.exit(1); }
 
 const hora = () => new Date().toTimeString().slice(0, 8);
 const diz = (msg) => console.log(`${hora()} ${msg}`);
 const ocupada = (porta) => new Promise((ok) => { const s = connect(porta, "127.0.0.1", () => { s.end(); ok(true); }); s.on("error", () => ok(false)); });
 
-/* os dois lados: de onde vem o código, como monta numa pasta à parte e onde fica a versão no ar */
-const lados = {
-  livros: {
-    nome: "o site dos livros", de: "do site dos livros",
-    pastas: ["livros", "experimentos", "src"].map((p) => `${RAIZ}/${p}`), arquivos: ["astro.config.mjs", "package.json"].map((a) => `${RAIZ}/${a}`),
-    montar: (destino) => ["npx", ["astro", "build", "--outDir", destino], RAIZ],
-    noAr: `${RAIZ}/dist`,
-  },
-  landing: {
-    nome: "a landing", de: "da landing",
-    pastas: ["src", "public"].map((p) => `${LANDING}/${p}`), arquivos: ["index.html", "vite.config.ts", "package.json"].map((a) => `${LANDING}/${a}`),
-    montar: (destino) => ["npx", ["vite", "build", "--outDir", destino, "--emptyOutDir", "--logLevel", "warn"], LANDING],
-    noAr: `${LANDING}/dist`,
-  },
+/* o site: de onde vem o código, como monta numa pasta à parte e onde fica a versão no ar */
+const site = {
+  nome: "o site", de: "do site",
+  pastas: ["livros", "experimentos", "src", "public"].map((p) => `${RAIZ}/${p}`), arquivos: ["astro.config.mjs", "package.json"].map((a) => `${RAIZ}/${a}`),
+  montar: (destino) => ["npx", ["astro", "build", "--outDir", destino], RAIZ],
+  noAr: `${RAIZ}/dist`,
+  /* um build por vez; mudança no meio de um build pede outro logo depois */
+  montando: false, deNovo: false, ultimaBoa: null, timer: null,
 };
-
-/* um build por vez em cada lado; mudança no meio de um build pede outro logo depois */
-for (const lado of Object.values(lados)) Object.assign(lado, { montando: false, deNovo: false, ultimaBoa: null, timer: null });
 async function montar(lado, motivo) {
   if (lado.montando) { lado.deNovo = true; return; }
   lado.montando = true;
-  const inicio = Date.now(), novo = `${RAIZ}/.tunel/${lado === lados.livros ? "livros" : "landing"}`, velho = `${novo}-velho`;
+  const inicio = Date.now(), novo = `${RAIZ}/.tunel/site`, velho = `${novo}-velho`;
   diz(`${motivo}: remontando ${lado.nome}…`);
   const [cmd, args, cwd] = lado.montar(novo);
   const saida = [];
   const codigo = await new Promise((fim) => {
-    const p = spawn(cmd, args, { cwd, env: { ...process.env, PUBLIC_URL_INICIO: "/" } });
+    const p = spawn(cmd, args, { cwd });
     p.stdout.on("data", (d) => saida.push(d)); p.stderr.on("data", (d) => saida.push(d)); p.on("close", fim);
   });
   if (codigo === 0) {
@@ -88,32 +75,28 @@ function vigiar(lado) {
     antes = agora;
     if (!mudou) return;
     clearTimeout(lado.timer);
-    lado.timer = setTimeout(() => montar(lado, `mudou ${mudou.replace(`${RAIZ}/`, "").replace(`${LANDING}/`, "FontMarAI/")}`), ESPERA_MS);
+    lado.timer = setTimeout(() => montar(lado, `mudou ${mudou.replace(`${RAIZ}/`, "")}`), ESPERA_MS);
   }, 1000);
 }
 
 /* sobe o que não estiver no ar; ao sair, para só o que este script subiu */
 const subidos = [];
 let pararPreview = false;
-await Promise.all([montar(lados.livros, "início"), montar(lados.landing, "início")]);
-if (!(await ocupada(PORTA_LIVROS))) {
+await montar(site, "início");
+if (!(await ocupada(PORTA))) {
   /* fora de um terminal, o astro preview roda desacoplado e volta na hora: para ele com astro preview stop */
-  spawnSync("npx", ["astro", "preview", "--port", String(PORTA_LIVROS), "--host", "127.0.0.1"], { cwd: RAIZ, stdio: "ignore" });
+  spawnSync("npx", ["astro", "preview", "--port", String(PORTA), "--host", "127.0.0.1"], { cwd: RAIZ, stdio: "ignore" });
   pararPreview = true;
 }
-if (!(await ocupada(PORTA_LANDING))) {
-  subidos.push(spawn("npx", ["vite", "preview", "--port", String(PORTA_LANDING), "--strictPort", "--host", "127.0.0.1"],
-    { cwd: LANDING, stdio: "ignore", env: { ...process.env, URL_CONTEUDO: `http://localhost:${PORTA_LIVROS}` } }));
-}
-const ngrok = spawnSync("pgrep", ["-f", `ngrok http ${PORTA_LANDING}`]).status === 0;
+const ngrok = spawnSync("pgrep", ["-f", `ngrok http ${PORTA}`]).status === 0;
 if (!ngrok) {
-  const p = spawn("ngrok", ["http", String(PORTA_LANDING), "--log", "stdout", "--log-format", "logfmt"], { stdio: ["ignore", "pipe", "ignore"] });
-  p.on("error", () => diz("o ngrok não está instalado: o site fica só em http://localhost:4173"));
+  const p = spawn("ngrok", ["http", String(PORTA), "--log", "stdout", "--log-format", "logfmt"], { stdio: ["ignore", "pipe", "ignore"] });
+  p.on("error", () => diz(`o ngrok não está instalado: o site fica só em http://localhost:${PORTA}`));
   p.stdout.on("data", (d) => { const url = d.toString().match(/url=(https:\/\/\S+)/); if (url) diz(`o túnel: ${url[1]}`); });
   subidos.push(p);
-} else diz("o ngrok já estava no ar para a landing");
-for (const lado of Object.values(lados)) vigiar(lado);
-diz(`de olho em livros/, experimentos/, src/ e na landing; o site em http://localhost:${PORTA_LANDING}. Ctrl+C para sair`);
+} else diz("o ngrok já estava no ar para o site");
+vigiar(site);
+diz(`de olho em livros/, experimentos/, src/ e public/; o site em http://localhost:${PORTA}. Ctrl+C para sair`);
 
 const sair = () => {
   for (const p of subidos) p.kill();

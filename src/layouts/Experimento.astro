@@ -6,7 +6,6 @@ import "../styles/livro.css";
 import "../styles/experimentos.css";
 import { dataLonga } from "../lib/datas";
 import type { MarkdownHeading } from "astro";
-import { INICIO } from "../lib/site";
 import Navegacao from "../components/livro/Navegacao.astro";
 import type { ItemSumario } from "../components/livro/Navegacao.astro";
 
@@ -42,7 +41,7 @@ const titulos = [{ id: "o-que-se-testa", texto: "O que se testa" }, ...secoes.fi
   </head>
   <body>
     <Navegacao livro="Experimentos" onde={titulo} itens={itens} secoes={titulos} anterior={anterior} proximo={proximo} />
-    <header class="topo"><div class="in"><button type="button" class="topo-sumario" data-abrir aria-controls="sumario" aria-label="Abrir o sumário" title="Abrir o sumário"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg></button><a class="marca" href={INICIO} aria-label="FonteMar.ai, início">Fonte<span>Mar</span><i>.ai</i></a><span class="nome"><a href="/experimentos/"><b>Experimentos</b></a> · um experimento que executa</span><span class="esp"></span><span id="onde">{titulo}</span><span class="topo-comandos" id="topo-comandos"></span></div><div class="progresso" id="progresso"></div></header>
+    <header class="topo"><div class="in"><button type="button" class="topo-sumario" data-abrir aria-controls="sumario" aria-label="Abrir o sumário" title="Abrir o sumário"><svg viewBox="0 0 24 24" width="18" height="18" aria-hidden="true"><path d="M4 6h16M4 12h16M4 18h16" stroke="currentColor" stroke-width="2" stroke-linecap="round" /></svg></button><a class="marca" href="/" aria-label="FontMar.ai, início">Font<span>Mar</span><i>.ai</i></a><span class="nome"><a href="/experimentos/"><b>Experimentos</b></a> · um experimento que executa</span><span class="esp"></span><span id="onde">{titulo}</span><span class="topo-comandos" id="topo-comandos"></span></div><div class="progresso" id="progresso"></div></header>
     <main class="livro">
       <section class="abertura-experimento">
         <div class="linha"><span class="etiqueta">{etiqueta}</span><NivelExperimento nivel={nivel} /><time class="quando" datetime={data}>{dataLonga(data)}</time></div>
