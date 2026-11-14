@@ -36,14 +36,7 @@ mexer nos dois, testar exige subir os dois, e o nome já divergiu (FontMar.ai na
 3. Apagar os proxies, as listas de rotas e as variáveis de repasse; um nome só.
 4. Renomear o repositório para FontMarAI e arquivar o antigo (no GitHub, pelo responsável).
 
-## Etapa 4, detalhada
-
-- **No GitHub, pelo responsável:** renomear o `FontMarAI` de hoje (a landing) para `FontMarAI-landing` e arquivá-lo;
-  depois, renomear o `poc_livro` para `FontMarAI` (o GitHub redireciona o endereço antigo).
-- **Aqui, com a decisão escrita do responsável:** `git remote set-url origin` para o `FontMarAI` e o `push` dos commits.
-- **Evidência:** `git remote -v` no endereço novo; `git status` em dia com `origin/main`; o repositório no GitHub com
-  `src/components/landing/`.
-- **Fora:** o deploy (a regra de reescrita da hospedagem sai quando o deploy for este site); renomear a pasta local.
+**Concluída em 14/11/2026.** O site é um só, no repositório `Erick-Marinho/FontMarAI`, publicado em https://fontemar-ai.web.app.
 
 ## Registro
 
@@ -52,5 +45,6 @@ mexer nos dois, testar exige subir os dois, e o nome já divergiu (FontMar.ai na
 | 1 | `79a30d6` | `git log -- landing/src/App.tsx` com os 8 commits; 205/205 testes e 5/5 da gravação. `saidas:conferir` e `experimentos:conferir` já falhavam em `0a915a9` (roteiro `01.json`, passo 2) | 14/11/2026, Erick |
 | 2 | `bed6928` | 211/211 testes; páginas do livro iguais pixel a pixel antes e depois (claro e escuro, 1280 e 500 px); landing igual à do FontMarAI, menos as quatro frases | 14/11/2026, Erick |
 | 3 | `ca27377` | 212/212 testes; nenhuma variável de repasse fora dos docs; `npm run dev` com a home, a estante, um capítulo e a newsletter numa porta só. O `npm run tunel` não foi executado (publicaria pelo ngrok) | 14/11/2026, Erick |
+| 4 | `a87b18f`, `aed18f2` | repositórios renomeados (`FontMarAI-landing` arquivado); merge dos 24 commits de outra máquina, 230/230 testes; `fontemar-livro` excluído; deploy no `fontemar-ai` com `/`, `/livros/`, `/experimentos/kv-cache/` e um capítulo em 200 | 14/11/2026, Erick |
 
 (redação: claude-opus-5-5)
