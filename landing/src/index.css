@@ -1,0 +1,157 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+/* escuro segue o sistema, como o poc_livro sem aparência escolhida */
+@custom-variant dark (@media (prefers-color-scheme: dark));
+
+@theme inline {
+    --font-heading: "Literata", Georgia, "Times New Roman", serif;
+    --font-sans: "IBM Plex Sans", "Segoe UI", system-ui, sans-serif;
+    --color-sidebar-ring: var(--sidebar-ring);
+    --color-sidebar-border: var(--sidebar-border);
+    --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+    --color-sidebar-accent: var(--sidebar-accent);
+    --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+    --color-sidebar-primary: var(--sidebar-primary);
+    --color-sidebar-foreground: var(--sidebar-foreground);
+    --color-sidebar: var(--sidebar);
+    --color-chart-5: var(--chart-5);
+    --color-chart-4: var(--chart-4);
+    --color-chart-3: var(--chart-3);
+    --color-chart-2: var(--chart-2);
+    --color-chart-1: var(--chart-1);
+    --color-ring: var(--ring);
+    --color-input: var(--input);
+    --color-border: var(--border);
+    --color-destructive: var(--destructive);
+    --color-accent-foreground: var(--accent-foreground);
+    --color-accent: var(--accent);
+    --color-muted-foreground: var(--muted-foreground);
+    --color-muted: var(--muted);
+    --color-secondary-foreground: var(--secondary-foreground);
+    --color-secondary: var(--secondary);
+    --color-primary-foreground: var(--primary-foreground);
+    --color-primary: var(--primary);
+    --color-popover-foreground: var(--popover-foreground);
+    --color-popover: var(--popover);
+    --color-card-foreground: var(--card-foreground);
+    --color-card: var(--card);
+    --color-foreground: var(--foreground);
+    --color-background: var(--background);
+    --radius-sm: calc(var(--radius) * 0.6);
+    --radius-md: calc(var(--radius) * 0.8);
+    --radius-lg: var(--radius);
+    --radius-xl: calc(var(--radius) * 1.4);
+    --radius-2xl: calc(var(--radius) * 1.8);
+    --radius-3xl: calc(var(--radius) * 2.2);
+    --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* as cores do poc_livro (src/styles/livro.css): papel no claro, o escuro dele no escuro */
+:root {
+    --background: #f6f2ea;
+    --foreground: #24201a;
+    --card: #fbf8f2;
+    --card-foreground: #24201a;
+    --popover: #fbf8f2;
+    --popover-foreground: #24201a;
+    --primary: #2a4fb5;
+    --primary-foreground: #ffffff;
+    --secondary: #ede7db;
+    --secondary-foreground: #24201a;
+    --muted: #ede7db;
+    --muted-foreground: #6b6357;
+    --accent: #ede7db;
+    --accent-foreground: #24201a;
+    --destructive: oklch(0.577 0.245 27.325);
+    --border: #ddd4c4;
+    --input: #ddd4c4;
+    --ring: #2a4fb5;
+    --chart-1: #2a4fb5;
+    --chart-2: #1f7a4c;
+    --chart-3: #9a5b00;
+    --chart-4: #6b6357;
+    --chart-5: #24201a;
+    --radius: 0.625rem;
+    --sidebar: #ede7db;
+    --sidebar-foreground: #24201a;
+    --sidebar-primary: #2a4fb5;
+    --sidebar-primary-foreground: #ffffff;
+    --sidebar-accent: #f6f2ea;
+    --sidebar-accent-foreground: #24201a;
+    --sidebar-border: #ddd4c4;
+    --sidebar-ring: #2a4fb5;
+    color-scheme: light;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: #16140f;
+    --foreground: #ebe4d6;
+    --card: #1c1913;
+    --card-foreground: #ebe4d6;
+    --popover: #1c1913;
+    --popover-foreground: #ebe4d6;
+    --primary: #8fa9ff;
+    --primary-foreground: #16140f;
+    --secondary: #1f1c16;
+    --secondary-foreground: #ebe4d6;
+    --muted: #1f1c16;
+    --muted-foreground: #a89f90;
+    --accent: #1f1c16;
+    --accent-foreground: #ebe4d6;
+    --destructive: oklch(0.704 0.191 22.216);
+    --border: #343026;
+    --input: #343026;
+    --ring: #8fa9ff;
+    --chart-1: #8fa9ff;
+    --chart-2: #57c48e;
+    --chart-3: #e0a440;
+    --chart-4: #a89f90;
+    --chart-5: #ebe4d6;
+    --sidebar: #1f1c16;
+    --sidebar-foreground: #ebe4d6;
+    --sidebar-primary: #8fa9ff;
+    --sidebar-primary-foreground: #16140f;
+    --sidebar-accent: #16140f;
+    --sidebar-accent-foreground: #ebe4d6;
+    --sidebar-border: #343026;
+    --sidebar-ring: #8fa9ff;
+    color-scheme: dark;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+    }
+  body {
+    @apply bg-background text-foreground;
+    }
+  button:not(:disabled), [role="button"]:not(:disabled) {
+    cursor: pointer;
+    }
+  html {
+    @apply font-sans;
+    }
+}
+
+/* a marca (components/Marca.tsx): ".gui" → o g vira e vira a → o u sai e o espaço fecha → ".ai" */
+.marca { perspective: 400px }
+.marca-troca { display: inline-grid }
+.marca-troca > * { grid-area: 1 / 1; display: inline-block; backface-visibility: hidden }
+.marca-g { animation: marca-vira-sai 0.3s ease-in 0.9s both }
+.marca-a { animation: marca-vira-entra 0.3s ease-out 1.2s both }
+.marca-u { display: inline-block; max-width: 1em; animation: marca-fecha 0.35s ease-in-out 1.85s both }
+.marca-u > span { display: inline-block; animation: marca-sobe 0.35s ease-in 1.6s both }
+
+@keyframes marca-vira-sai { to { transform: rotateY(90deg); opacity: 0 } }
+@keyframes marca-vira-entra { from { transform: rotateY(-90deg); opacity: 0 } }
+@keyframes marca-sobe { to { transform: translateY(-0.9em); opacity: 0 } }
+@keyframes marca-fecha { to { max-width: 0 } }
+
+@media (prefers-reduced-motion: reduce) {
+  .marca-g, .marca-u { display: none }
+  .marca-a { animation: none }
+}
